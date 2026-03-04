@@ -8,8 +8,7 @@ version: "0.1.0"
 # 定时任务
 schedule:
   enabled: true
-  external_time: "08:10"      # 对外版发送时间
-  internal_time: "08:30"      # 对内版发送时间
+  time: "08:10"        # 发送时间
   timezone: "Asia/Shanghai"
   
 # 评分权重（所有权重之和应等于1.0）
@@ -106,23 +105,12 @@ data_sources:
 
 # 输出配置
 output:
-  # 对外版设置（公开发布）
-  external:
-    max_length: 800              # 正文字数限制
-    include_score: false         # 是否显示分数
-    include_source_icon: false   # 是否显示来源emoji
-    signature: "一石半会儿 | 产品经理、AI学习者"
-    disclaimer: "个人学习笔记，不构成投资建议"
-    format: "text"               # 格式：text/markdown
-  
-  # 对内版设置（个人分析）
-  internal:
-    max_length: 1200
-    include_score: true          # 显示分数
-    include_portfolio: true      # 关联持仓分析
-    include_action: true         # 给出操作建议
-    signature: "Daily Signal Brief"
-    portfolio_file: "memory/portfolio-2026-03.md"  # 持仓档案路径
+  max_length: 800              # 正文字数限制
+  include_score: false         # 是否显示分数
+  include_source_icon: false   # 是否显示来源标识
+  signature: "一石半会儿 | 产品经理、AI学习者"
+  disclaimer: "个人学习笔记，不构成投资建议"
+  format: "text"               # 格式：text/markdown
 
 # 推送渠道
 channels:
@@ -139,11 +127,11 @@ channels:
     password: ""
     to: ""
   
-  # 可选：保存到文件（用于Hugo等）
+  # 可选：保存到文件
   file:
     enabled: false
     path: "output/hotspot/"
-    format: "markdown"           # 保存为md文件供Hugo使用
+    format: "markdown"
 
 # 高级设置
 advanced:
@@ -160,4 +148,4 @@ advanced:
   weekly_summary:
     enabled: true
     time: "22:00"
-    include_charts: false        # 是否生成趋势图（需要chart skill）
+    include_charts: false        # 是否生成趋势图
