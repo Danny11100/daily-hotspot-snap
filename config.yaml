@@ -116,7 +116,7 @@ output:
 channels:
   telegram:
     enabled: true
-    target: "5678136850"         # 你的Telegram ID
+    target: "YOUR_TELEGRAM_ID"   # 替换为你的Telegram ID
   
   # 可选：邮件推送
   email:
