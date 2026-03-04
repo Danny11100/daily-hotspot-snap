@@ -1,0 +1,163 @@
+# Daily Hotspot Snap 配置文件
+# 复制此文件到 workspace 根目录并修改
+
+# 基础设置
+name: "daily-hotspot-snap"
+version: "0.1.0"
+
+# 定时任务
+schedule:
+  enabled: true
+  external_time: "08:10"      # 对外版发送时间
+  internal_time: "08:30"      # 对内版发送时间
+  timezone: "Asia/Shanghai"
+  
+# 评分权重（所有权重之和应等于1.0）
+scoring:
+  heat: 0.4            # 热度：讨论量、搜索趋势
+  signal: 0.3          # 情绪信号：市场反应、专家一致性
+  relevance: 0.2       # 相关度：与你关注领域的匹配
+  timeliness: 0.1      # 时效性：24h内得分最高
+  threshold: 60        # 入选阈值（0-100）
+  max_items: 10        # 每日最大条数
+
+# 关注领域（用于计算相关度）
+# 可选：ai, fintech, crypto, product, biotech, energy, geopolitics
+interests:
+  - ai
+  - fintech
+  - crypto
+  - product
+
+# 数据源配置
+data_sources:
+  # 一级信源（AI/科技）
+  arxiv_ai:
+    enabled: true
+    url: "https://arxiv.org/rss/cs.AI"
+    category: "ai"
+    weight: 1.0
+    
+  openai_blog:
+    enabled: true
+    url: "https://openai.com/blog/rss.xml"
+    category: "ai"
+    weight: 1.2
+    
+  hackernews:
+    enabled: true
+    url: "https://hnrss.org/frontpage"
+    category: "tech"
+    weight: 1.0
+    
+  mit_tech_review:
+    enabled: true
+    url: "https://www.technologyreview.com/feed/"
+    category: "tech"
+    weight: 0.9
+  
+  # 一级信源（金融/宏观）
+  bloomberg:
+    enabled: true
+    url: "https://www.bloomberg.com/feeds/markets"
+    category: "finance"
+    weight: 1.2
+    note: "可能需要订阅"
+    
+  reuters:
+    enabled: true
+    url: "https://www.reuters.com/markets/rss"
+    category: "finance"
+    weight: 1.1
+    
+  # 二级信源（Crypto）
+  coindesk:
+    enabled: true
+    url: "https://www.coindesk.com/arc/outboundfeeds/rss/"
+    category: "crypto"
+    weight: 1.0
+    
+  the_block:
+    enabled: true
+    url: "https://www.theblock.co/rss.xml"
+    category: "crypto"
+    weight: 0.9
+  
+  # 二级信源（产品/商业）
+  first_round:
+    enabled: true
+    url: "https://review.firstround.com/rss"
+    category: "product"
+    weight: 0.8
+    
+  stratechery:
+    enabled: true
+    url: "https://stratechery.com/feed/"
+    category: "product"
+    weight: 0.9
+  
+  # 自定义RSS源（用户可添加）
+  custom: []
+  # 示例：
+  # - name: "My Blog"
+  #   url: "https://myblog.com/rss"
+  #   category: "personal"
+  #   weight: 0.5
+
+# 输出配置
+output:
+  # 对外版设置（公开发布）
+  external:
+    max_length: 800              # 正文字数限制
+    include_score: false         # 是否显示分数
+    include_source_icon: false   # 是否显示来源emoji
+    signature: "一石半会儿 | 产品经理、AI学习者"
+    disclaimer: "个人学习笔记，不构成投资建议"
+    format: "text"               # 格式：text/markdown
+  
+  # 对内版设置（个人分析）
+  internal:
+    max_length: 1200
+    include_score: true          # 显示分数
+    include_portfolio: true      # 关联持仓分析
+    include_action: true         # 给出操作建议
+    signature: "Daily Signal Brief"
+    portfolio_file: "memory/portfolio-2026-03.md"  # 持仓档案路径
+
+# 推送渠道
+channels:
+  telegram:
+    enabled: true
+    target: "5678136850"         # 你的Telegram ID
+  
+  # 可选：邮件推送
+  email:
+    enabled: false
+    smtp_server: ""
+    smtp_port: 587
+    username: ""
+    password: ""
+    to: ""
+  
+  # 可选：保存到文件（用于Hugo等）
+  file:
+    enabled: false
+    path: "output/hotspot/"
+    format: "markdown"           # 保存为md文件供Hugo使用
+
+# 高级设置
+advanced:
+  # 缓存时间（分钟）
+  cache_duration: 30
+  
+  # 重试次数
+  retry_count: 3
+  
+  # 日志级别
+  log_level: "info"              # debug/info/warn/error
+  
+  # 周报生成（周日）
+  weekly_summary:
+    enabled: true
+    time: "22:00"
+    include_charts: false        # 是否生成趋势图（需要chart skill）

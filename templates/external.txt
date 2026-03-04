@@ -1,0 +1,20 @@
+全球热点快照 | {{date}}
+
+{{#categories}}
+{{symbol}} {{name}}
+
+{{#items}}
+{{number}} {{title}}
+来源：{{source}}
+解读：{{summary}}
+
+{{/items}}
+{{/categories}}
+
+今日情绪：{{market_sentiment}}（{{sentiment_details}}）
+关键信号：{{key_signals}}
+
+新闻逻辑：热度 + 情绪信号 + 相关度 + 时效性
+免责声明：{{disclaimer}}
+
+{{signature}}
